@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#0F172A] text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhishGuard - Phishing Detection Tool</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            darkCanvas: '#0F172A',
+            cardBg: '#111827',
+            cardBgLight: '#1E293B',
+            sidebarBg: '#0B1120',
+            borderSlate: '#1E293B',
+            borderSubtle: '#334155',
+            brandBlue: '#2563EB',
+            brandBlueHover: '#1D4ED8',
+            riskRed: '#EF4444',
+            riskOrange: '#F97316',
+            riskGreen: '#10B981',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0F172A;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="h-full font-sans bg-darkCanvas text-slate-100 antialiased flex flex-col lg:flex-row overflow-x-hidden">
+
+  <!-- LEFT SIDEBAR NAVIGATION -->
+  <aside class="w-full lg:w-64 bg-sidebarBg border-r border-borderSlate flex flex-col justify-between shrink-0">
+    <div>
+      <!-- Header Logo -->
+      <div class="p-5 border-b border-borderSlate flex items-center space-x-3 cursor-pointer" onclick="navigateTo('dashboard')">
+        <div class="bg-brandBlue p-2 rounded-xl text-white shadow-lg shadow-blue-500/20 flex items-center justify-center">
+          <i data-lucide="shield" class="w-6 h-6 fill-current"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-lg text-white tracking-wide leading-tight flex items-center">
+            PhishGuard
+          </h1>
+          <p class="text-[9px] text-slate-400 font-semibold tracking-wider uppercase">PHISHING DETECTION TOOL</p>
+        </div>
+      </div>
+
+      <!-- Section Title -->
+      <div class="px-5 pt-5 pb-2">
+        <span class="text-[10px] font-bold text-slate-500 tracking-wider uppercase">WORKSPACE</span>
+      </div>
+
+      <!-- Menu Items -->
+      <nav class="px-3 space-y-1">
+        <button onclick="navigateTo('dashboard')" id="nav-dashboard" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-semibold bg-brandBlue/15 text-blue-400 border border-brandBlue/30 shadow-sm transition-all">
+          <div class="flex items-center space-x-3">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+            <span>Dashboard</span>
+          </div>
+          <span class="active-dot w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+        </button>
+
+        <button onclick="navigateTo('analyze')" id="nav-analyze" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 transition-all">
+          <div class="flex items-center space-x-3">
+            <i data-lucide="search" class="w-4 h-4"></i>
+            <span>Analyze Message</span>
+          </div>
+          <span class="active-dot hidden w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+        </button>
+
+        <button onclick="navigateTo('history')" id="nav-history" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 transition-all">
+          <div class="flex items-center space-x-3">
+            <i data-lucide="history" class="w-4 h-4"></i>
+            <span>Scan History</span>
+          </div>
+          <span class="active-dot hidden w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+        </button>
+
+        <button onclick="navigateTo('awareness')" id="nav-awareness" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 transition-all">
+          <div class="flex items-center space-x-3">
+            <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+            <span>Phishing Awareness</span>
+          </div>
+          <span class="active-dot hidden w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+        </button>
+
+        <button onclick="navigateTo('about')" id="nav-about" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 transition-all">
+          <div class="flex items-center space-x-3">
+            <i data-lucide="info" class="w-4 h-4"></i>
+            <span>About Project</span>
+          </div>
+          <span class="active-dot hidden w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+        </button>
+      </nav>
+    </div>
+
+    <div>
+      <!-- Private by Design Card -->
+      <div class="m-3 p-3.5 bg-slate-900/90 rounded-xl border border-borderSlate space-y-1.5">
+        <div class="flex items-center space-x-2 text-emerald-400">
+          <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+          <span class="text-xs font-semibold text-slate-200">Private by design</span>
+        </div>
+        <p class="text-[11px] text-slate-400 leading-snug">
+          Messages are analysed in your browser. History stays on this device.
+        </p>
+      </div>
+
+      <!-- Footer Info -->
+      <div class="p-4 border-t border-borderSlate text-[10px] text-slate-500">
+        <p class="font-semibold text-slate-400">VSEC Mini-Project</p>
+        <p>Prototype · rule-based engine</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTAINER -->
+  <div class="flex-1 flex flex-col overflow-y-auto">
+    
+    <!-- TOP BAR -->
+    <header class="border-b border-borderSlate px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-darkCanvas/80 backdrop-blur-md sticky top-0 z-20">
+      <div>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">RULE-BASED SCANNER</p>
+        <h2 id="top-bar-title" class="text-xl font-bold text-white tracking-tight">Dashboard</h2>
+      </div>
+
+      <!-- Status Badges & Quick Action -->
+      <div class="flex flex-wrap items-center gap-2">
+        <div class="flex items-center space-x-1.5 bg-slate-900 border border-borderSlate text-slate-300 text-xs px-3 py-1.5 rounded-full">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Rule engine online</span>
+        </div>
+        <div class="flex items-center space-x-1.5 bg-slate-900 border border-borderSlate text-slate-300 text-xs px-3 py-1.5 rounded-full">
+          <i data-lucide="cpu" class="w-3.5 h-3.5 text-slate-400"></i>
+          <span>Local rule engine</span>
+        </div>
+        <div class="flex items-center space-x-1.5 bg-slate-900 border border-borderSlate text-slate-300 text-xs px-3 py-1.5 rounded-full">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5 text-slate-400"></i>
+          <span>No data sent</span>
+        </div>
+        <button onclick="navigateTo('analyze')" class="bg-brandBlue hover:bg-brandBlueHover text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg flex items-center space-x-1.5 transition-colors shadow-sm">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+          <span>New scan</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- VIEW 1: DASHBOARD VIEW -->
+    <main id="view-dashboard" class="view-panel p-6 space-y-6 flex-1">
+      
+      <!-- Top Tip Card -->
+      <div class="bg-gradient-to-r from-blue-900/40 via-slate-900 to-indigo-900/30 border border-blue-500/30 rounded-xl p-4 flex items-center justify-between gap-4">
+        <div class="flex items-center space-x-3.5">
+          <div class="p-2.5 bg-blue-500/20 text-blue-400 rounded-xl border border-blue-500/30">
+            <i data-lucide="lightbulb" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <span class="text-[10px] font-bold text-blue-400 uppercase tracking-wider">KEY SECURITY TIP</span>
+            <p class="text-xs text-slate-200 font-medium">
+              "A one-time code (OTP) is the last line of defence. Never share it over email, SMS, or chat."
+            </p>
+          </div>
+        </div>
+        <button onclick="navigateTo('awareness')" class="hidden sm:flex text-xs font-semibold text-blue-400 hover:text-blue-300 items-center space-x-1 shrink-0">
+          <span>Learn tactics</span>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <!-- Center Feed & Session Breakdown Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- CENTER FEED: RECENT SCANNED MESSAGES (8 COLS) -->
+        <div class="lg:col-span-8 bg-cardBg border border-borderSlate rounded-xl p-5 space-y-4 shadow-sm">
+          <div class="flex items-center justify-between border-b border-borderSlate pb-3">
+            <div>
+              <h3 class="text-sm font-semibold text-white">Recent Activity</h3>
+              <p class="text-[11px] text-slate-400">Latest analyzed messages and threat scores</p>
+            </div>
+            <button onclick="navigateTo('history')" class="text-xs text-blue-400 hover:text-blue-300 font-medium flex items-center space-x-1">
+              <span>View all</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Feed Items Container -->
+          <div id="dashboard-feed-list" class="space-y-3">
+            <!-- Dynamically populated via JS -->
+          </div>
+        </div>
+
+        <!-- RIGHT PANEL: SESSION RISK BREAKDOWN (4 COLS) -->
+        <div class="lg:col-span-4 bg-cardBg border border-borderSlate rounded-xl p-5 space-y-5 shadow-sm">
+          <div class="border-b border-borderSlate pb-3">
+            <h3 class="text-sm font-semibold text-white">Session Risk Breakdown</h3>
+            <p class="text-[11px] text-slate-400">Risk distribution across 150 scanned items</p>
+          </div>
+
+          <!-- Multi-colored Proportional Progress Bar -->
+          <div class="space-y-2">
+            <div class="h-3 bg-slate-800 rounded-full overflow-hidden flex">
+              <div style="width: 8%" class="bg-riskRed" title="High Risk: 8%"></div>
+              <div style="width: 18%" class="bg-riskOrange" title="Suspicious: 18%"></div>
+              <div style="width: 74%" class="bg-riskGreen" title="Low Risk: 74%"></div>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+              <span>0%</span>
+              <span>100%</span>
+            </div>
+          </div>
+
+          <!-- Legend Stats -->
+          <div class="space-y-3 text-xs">
+            <div class="flex items-center justify-between p-2.5 bg-slate-900/80 rounded-lg border border-borderSlate">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-riskRed"></span>
+                <span class="text-slate-300">High Risk (60-100)</span>
+              </div>
+              <span class="font-mono font-bold text-slate-100">12 (8%)</span>
+            </div>
+
+            <div class="flex items-center justify-between p-2.5 bg-slate-900/80 rounded-lg border border-borderSlate">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-riskOrange"></span>
+                <span class="text-slate-300">Suspicious (30-59)</span>
+              </div>
+              <span class="font-mono font-bold text-slate-100">28 (18%)</span>
+            </div>
+
+            <div class="flex items-center justify-between p-2.5 bg-slate-900/80 rounded-lg border border-borderSlate">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-riskGreen"></span>
+                <span class="text-slate-300">Low Risk (0-29)</span>
+              </div>
+              <span class="font-mono font-bold text-slate-100">110 (74%)</span>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-borderSlate text-[11px] text-slate-400 leading-relaxed">
+            <span class="font-semibold text-slate-200">Rule Engine Health:</span> Optimal. Processing messages locally in browser memory without external server exposure.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- BOTTOM ACTION GRID -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+        
+        <div onclick="navigateTo('analyze')" class="bg-cardBg hover:bg-slate-800/80 border border-borderSlate hover:border-brandBlue/50 rounded-xl p-5 cursor-pointer transition-all space-y-3 group">
+          <div class="p-2.5 bg-blue-500/10 text-blue-400 rounded-xl w-max group-hover:bg-brandBlue group-hover:text-white transition-colors">
+            <i data-lucide="search" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors">Run a full analysis</h4>
+            <p class="text-xs text-slate-400 leading-relaxed mt-1">
+              Paste raw message text, emails, or SMS content for heuristic threat detection.
+            </p>
+          </div>
+          <span class="text-xs text-blue-400 font-semibold flex items-center space-x-1 pt-1">
+            <span>Analyze message</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </span>
+        </div>
+
+        <div onclick="navigateTo('history')" class="bg-cardBg hover:bg-slate-800/80 border border-borderSlate hover:border-brandBlue/50 rounded-xl p-5 cursor-pointer transition-all space-y-3 group">
+          <div class="p-2.5 bg-purple-500/10 text-purple-400 rounded-xl w-max group-hover:bg-purple-600 group-hover:text-white transition-colors">
+            <i data-lucide="history" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white group-hover:text-purple-400 transition-colors">Review past scans</h4>
+            <p class="text-xs text-slate-400 leading-relaxed mt-1">
+              Filter through historical scan logs, risk indicators, and threat tags.
+            </p>
+          </div>
+          <span class="text-xs text-purple-400 font-semibold flex items-center space-x-1 pt-1">
+            <span>View scan logs</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </span>
+        </div>
+
+        <div onclick="navigateTo('awareness')" class="bg-cardBg hover:bg-slate-800/80 border border-borderSlate hover:border-brandBlue/50 rounded-xl p-5 cursor-pointer transition-all space-y-3 group">
+          <div class="p-2.5 bg-emerald-500/10 text-emerald-400 rounded-xl w-max group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+            <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white group-hover:text-emerald-400 transition-colors">Learn the warning signs</h4>
+            <p class="text-xs text-slate-400 leading-relaxed mt-1">
+              Explore common phishing hooks like deceptive links, urgency, and OTP fraud.
+            </p>
+          </div>
+          <span class="text-xs text-emerald-400 font-semibold flex items-center space-x-1 pt-1">
+            <span>Read awareness guide</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </span>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- VIEW 2: ANALYZE MESSAGE VIEW -->
+    <main id="view-analyze" class="view-panel hidden p-6 space-y-6 flex-1">
+      <p class="text-xs text-slate-400 -mt-2">
+        Paste the suspicious text exactly as you received it. The engine returns a weighted risk score and explains every rule that fired.
+      </p>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- LEFT COLUMN: INPUT & RULE ENGINE DOCS (6 COLS) -->
+        <div class="lg:col-span-6 space-y-6">
+          
+          <!-- MESSAGE INPUT CARD -->
+          <div class="bg-cardBg border border-borderSlate rounded-xl p-5 space-y-4 shadow-sm">
+            
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <div class="p-1.5 bg-blue-500/10 text-blue-400 rounded-lg">
+                  <i data-lucide="mail" class="w-4 h-4"></i>
+                </div>
+                <h3 class="text-sm font-semibold text-white">Message input</h3>
+                <div class="flex items-center space-x-1 text-[10px] text-slate-400">
+                  <span class="px-1.5 py-0.5 bg-slate-800 rounded">SMS</span>
+                  <span>·</span>
+                  <span class="px-1.5 py-0.5 bg-slate-800 rounded">WhatsApp</span>
+                  <span>·</span>
+                  <span class="px-1.5 py-0.5 bg-slate-800 rounded">email</span>
+                </div>
+              </div>
+
+              <span class="text-[11px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full flex items-center space-x-1">
+                <i data-lucide="lock" class="w-3 h-3"></i>
+                <span>Never uploaded</span>
+              </span>
+            </div>
+
+            <!-- Textarea Area -->
+            <div class="relative">
+              <textarea id="message-text" rows="5" oninput="handleInput()" placeholder="Paste message or email content here..." class="w-full bg-slate-900 border border-borderSlate rounded-lg p-3.5 text-xs text-slate-100 placeholder-slate-500 font-mono leading-relaxed focus:outline-none focus:border-brandBlue focus:ring-1 focus:ring-brandBlue transition-all">URGENT: Your Chase account has been locked due to unusual activity. To restore access, verify your identity within 24 hours at http://chase-secure-verify.top/login — otherwise your account will be permanently suspended.</textarea>
+              <button onclick="pasteFromClipboard()" class="absolute right-3 bottom-3 bg-slate-800 hover:bg-slate-700 border border-borderSubtle text-slate-300 text-[11px] px-2.5 py-1 rounded flex items-center space-x-1 transition-colors">
+                <i data-lucide="clipboard" class="w-3 h-3"></i>
+                <span>Paste</span>
+              </button>
+            </div>
+
+            <!-- Input Controls bar -->
+            <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 border-b border-borderSlate/60 pb-3">
+              <div class="flex items-center space-x-2">
+                <!-- Dropdown presets -->
+                <div class="relative inline-block text-left">
+                  <button onclick="togglePresetDropdown()" class="bg-slate-800 hover:bg-slate-700 border border-borderSubtle text-slate-200 px-2.5 py-1 rounded text-xs flex items-center space-x-1">
+                    <i data-lucide="layers" class="w-3 h-3"></i>
+                    <span>Samples</span>
+                    <i data-lucide="chevron-down" class="w-3 h-3"></i>
+                  </button>
+                  <div id="preset-dropdown" class="hidden absolute left-0 mt-1 w-56 bg-slate-800 border border-borderSubtle rounded-lg shadow-xl z-30 divide-y divide-slate-700/60">
+                    <a href="#" onclick="loadPreset('chase'); togglePresetDropdown();" class="block px-3 py-2 text-xs text-slate-200 hover:bg-slate-700">Chase Phishing (High Risk)</a>
+                    <a href="#" onclick="loadPreset('package'); togglePresetDropdown();" class="block px-3 py-2 text-xs text-slate-200 hover:bg-slate-700">Package Delivery (Suspicious)</a>
+                    <a href="#" onclick="loadPreset('meeting'); togglePresetDropdown();" class="block px-3 py-2 text-xs text-slate-200 hover:bg-slate-700">Internal Meeting (Low Risk)</a>
+                  </div>
+                </div>
+
+                <button onclick="loadPreset('chase')" class="bg-slate-800 hover:bg-slate-700 border border-borderSubtle text-slate-200 px-2.5 py-1 rounded text-xs flex items-center space-x-1">
+                  <i data-lucide="sparkles" class="w-3 h-3"></i>
+                  <span>Try Example</span>
+                </button>
+
+                <button onclick="clearText()" class="bg-slate-800 hover:bg-slate-700 border border-borderSubtle text-slate-200 px-2.5 py-1 rounded text-xs flex items-center space-x-1">
+                  <i data-lucide="x" class="w-3 h-3"></i>
+                  <span>Clear</span>
+                </button>
+              </div>
+
+              <span id="char-counter" class="text-[11px] font-mono text-slate-400">219 / 4000 characters</span>
+            </div>
+
+            <!-- Analyze Action Bar -->
+            <div class="flex items-center space-x-3 pt-1">
+              <button onclick="runAnalysis()" class="flex-1 bg-brandBlue hover:bg-brandBlueHover text-white text-xs font-semibold py-2.5 rounded-lg flex items-center justify-center space-x-2 transition-colors shadow-lg shadow-blue-600/20">
+                <i data-lucide="search" class="w-4 h-4"></i>
+                <span>Analyze Message</span>
+              </button>
+              <button onclick="resetAnalyzer()" class="bg-slate-800 hover:bg-slate-700 border border-borderSubtle text-slate-300 text-xs px-3.5 py-2.5 rounded-lg flex items-center space-x-1.5 transition-colors">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                <span>Reset</span>
+              </button>
+            </div>
+
+            <p class="text-[11px] text-slate-500 italic text-center pt-1">
+              Rule-based prototype. Results may contain false positives or miss sophisticated phishing.
+            </p>
+
+          </div>
+
+          <!-- HOW THE SCORE IS CALCULATED CARD -->
+          <div class="bg-cardBg border border-borderSlate rounded-xl p-5 space-y-4 shadow-sm">
+            
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-borderSlate pb-3">
+              <div class="flex items-center space-x-2">
+                <div class="p-1.5 bg-purple-500/10 text-purple-400 rounded-lg">
+                  <i data-lucide="sliders" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-semibold text-white">How the score is calculated</h3>
+                  <p class="text-[11px] text-slate-400">Documented weights, no black box</p>
+                </div>
+              </div>
+              <span class="text-[11px] font-mono bg-slate-800 border border-borderSubtle text-slate-300 px-2 py-0.5 rounded">
+                18 rules · max 100
+              </span>
+            </div>
+
+            <!-- Multi-segment Threshold Bar -->
+            <div class="space-y-1.5">
+              <div class="grid grid-cols-3 text-center text-[10px] font-semibold border border-borderSlate rounded-lg overflow-hidden h-7">
+                <div class="bg-emerald-950/60 border-r border-borderSlate text-emerald-400 flex flex-col justify-center">
+                  <span>Low Risk</span>
+                  <span class="text-[9px] font-normal opacity-80">0 – 29</span>
+                </div>
+                <div class="bg-amber-950/60 border-r border-borderSlate text-amber-400 flex flex-col justify-center">
+                  <span>Suspicious</span>
+                  <span class="text-[9px] font-normal opacity-80">30 – 59</span>
+                </div>
+                <div class="bg-red-950/60 text-red-400 flex flex-col justify-center">
+                  <span>High Risk</span>
+                  <span class="text-[9px] font-normal opacity-80">60 – 100</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rules Grid Breakdown (2 Columns) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs pt-1">
+              
+              <!-- Column 1: Language & Pressure -->
+              <div class="space-y-2">
+                <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">LANGUAGE AND PRESSURE</h4>
+                <ul class="space-y-1.5 text-slate-300">
+                  <li class="flex justify-between items-center py-0.5 border-b border-slate-800/60">
+                    <span>Manufactured urgency</span>
+                    <span class="font-mono font-bold text-blue-400">+28</span>
+                  </li>
+                  <li class="flex justify-between items-center py-0.5 border-b border-slate-800/60">
+                    <span>Threat of losing access</span>
+                    <span class="font-mono font-bold text-blue-400">+14</span>
+                  </li>
+                  <li class="flex justify-between items-center py-0.5 border-b border-slate-800/60">
+                    <span>Prize or windfall bait</span>
+                    <span class="font-mono font-bold text-blue-400">+14</span>
+                  </li>
+                  <li class="flex justify-between items-center py-0.5">
+                    <span>Asks you to keep it secret</span>
+                    <span class="font-mono font-bold text-blue-400">+14</span>
+                  </li>
+                </ul>
+
+                <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider pt-2">LINK STRUCTURE</h4>
+                <ul class="space-y-1.5 text-slate-300">
+                  <li class="flex justify-between items-center py-0.5 border-b border-slate-800/60">
+                    <span>Link destination is deceptive</span>
+                    <span class="font-mono font-bold text-blue-400">+20</span>
+                  </li>
+                  <li class="flex justify-between items-center py-0.5">
+                    <span>Brand name doesn't match link</span>
+                    <span class="font-mono font-bold text-blue-400">+16</span>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Column 2: Requests for Secrets or Money -->
+              <div class="space-y-2">
+                <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">REQUESTS FOR SECRETS OR MONEY</h4>
+                <ul class="space-y-1.5 text-slate-300">
+                  <li class="flex justify-between items-center py-0.5 border-b border-slate-800/60">
+                    <span>Asks for credentials or codes</span>
+                    <span class="font-mono font-bold text-blue-400">+24</span>
+                  </li>
+                  <li class="flex justify-between items-center py-0.5 border-b border-slate-800/60">
+                    <span>Requests identity verification</span>
+                    <span class="font-mono font-bold text-blue-400">+20</span>
+                  </li>
+                  <li class="flex justify-between items-center py-0.5 border-b border-slate-800/60">
+                    <span>Requests payment or gift cards</span>
+                    <span class="font-mono font-bold text-blue-400">+26</span>
+                  </li>
+                  <li class="flex justify-between items-center py-0.5 border-b border-slate-800/60">
+                    <span>Asks for sensitive personal data</span>
+                    <span class="font-mono font-bold text-blue-400">+16</span>
+                  </li>
+                  <li class="flex justify-between items-center py-0.5 border-b border-slate-800/60">
+                    <span>Asks you to buy something for them</span>
+                    <span class="font-mono font-bold text-blue-400">+28</span>
+                  </li>
+                  <li class="flex justify-between items-center py-0.5">
+                    <span>Pushes an attachment or download</span>
+                    <span class="font-mono font-bold text-blue-400">+12</span>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+
+            <!-- Explanatory Footnote -->
+            <div class="space-y-1.5 pt-3 border-t border-borderSlate text-[11px] text-slate-400 leading-relaxed">
+              <p><strong class="text-slate-200">Repetition adds points.</strong> Each extra distinct match of the same rule adds up to +4, so a message that repeats a tactic scores higher.</p>
+              <p><strong class="text-slate-200">One keyword is not a verdict.</strong> When only a single indicator is triggered, the score is capped at 44 so the message cannot be labelled High Risk on one word alone.</p>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: RESULTS GAUGE & TRIGGERED INDICATORS (6 COLS) -->
+        <div class="lg:col-span-6 space-y-6">
+          
+          <!-- SCORE GAUGE CARD -->
+          <div class="bg-cardBg border border-borderSlate rounded-xl p-5 space-y-5 shadow-sm">
+            
+            <div class="flex items-center justify-between border-b border-borderSlate pb-3">
+              <div class="flex items-center space-x-3 text-xs text-slate-400">
+                <span class="font-semibold text-white">REPORT</span>
+                <span>·</span>
+                <span class="flex items-center text-slate-300"><i data-lucide="smartphone" class="w-3.5 h-3.5 mr-1"></i> SMS / Email</span>
+              </div>
+              <div class="flex items-center space-x-3 text-xs">
+                <button onclick="copyReport()" class="text-slate-400 hover:text-white flex items-center space-x-1 transition-colors">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  <span>Copy report</span>
+                </button>
+                <button onclick="resetAnalyzer()" class="text-blue-400 hover:text-blue-300 flex items-center space-x-1 font-medium transition-colors">
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                  <span>New scan</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Gauge Ring & Summary Area -->
+            <div class="flex flex-col md:flex-row items-center gap-5">
+              
+              <!-- Circular Gauge Widget -->
+              <div class="relative w-32 h-32 shrink-0 flex items-center justify-center">
+                <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                  <path class="text-slate-800" stroke-width="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                  <path id="gauge-arc" class="text-riskRed transition-all duration-700 ease-out" stroke-dasharray="100, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                </svg>
+                <div class="absolute flex flex-col items-center">
+                  <span id="score-display" class="text-3xl font-extrabold text-white tracking-tight">100</span>
+                  <span class="text-[9px] font-mono text-slate-400 uppercase tracking-wider">RISK / 100</span>
+                </div>
+              </div>
+
+              <!-- Summary Text & Warning -->
+              <div class="space-y-2 text-xs">
+                <div class="flex items-center space-x-2">
+                  <span id="badge-status" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-red-500/10 text-red-400 border border-red-500/30 flex items-center">
+                    <span id="status-dot" class="w-1.5 h-1.5 rounded-full bg-red-500 mr-1.5"></span>
+                    <span id="status-text">HIGH RISK</span>
+                  </span>
+                  <span id="indicators-count-badge" class="text-slate-400 text-[11px]">6 indicators</span>
+                </div>
+
+                <p id="summary-headline" class="text-red-400 font-medium leading-relaxed">
+                  High-risk indicators detected: a request to share a password or one-time code, urgent deadline language and a request to verify the account through a link.
+                </p>
+
+                <p class="text-slate-400 text-[11px]">
+                  Don't reply, don't click, and don't share codes or payment details.
+                </p>
+              </div>
+
+            </div>
+
+            <!-- Tabs: Indicators, Links, Next Steps -->
+            <div class="flex items-center space-x-1 border-t border-borderSlate pt-3">
+              <button onclick="switchTab('indicators')" id="tab-btn-indicators" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-brandBlue text-white shadow-sm">
+                Indicators <span id="tab-count" class="ml-1 opacity-80">6</span>
+              </button>
+              <button onclick="switchTab('links')" id="tab-btn-links" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200">
+                Links <span id="tab-links-count" class="ml-1 opacity-80">1</span>
+              </button>
+              <button onclick="switchTab('nextsteps')" id="tab-btn-nextsteps" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200">
+                Next steps
+              </button>
+            </div>
+
+          </div>
+
+          <!-- TRIGGERED INDICATORS FEED -->
+          <div class="space-y-3">
+            
+            <div class="flex items-center justify-between text-xs text-slate-400 px-1">
+              <h3 id="feed-title" class="font-semibold text-white">6 indicators triggered</h3>
+              <span id="text-meta-stats" class="font-mono text-[11px]">38 words · 1 links · 5% caps</span>
+            </div>
+
+            <!-- List Container for Rule Cards -->
+            <div id="rules-container" class="space-y-3">
+              <!-- Dynamically Populated by JavaScript -->
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+
+    <!-- VIEW 3: SCAN HISTORY VIEW -->
+    <main id="view-history" class="view-panel hidden p-6 space-y-6 flex-1">
+      <div class="bg-cardBg border border-borderSlate rounded-xl p-5 space-y-4 shadow-sm">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-borderSlate pb-4">
+          <div>
+            <h3 class="text-base font-semibold text-white">Scan History Log</h3>
+            <p class="text-xs text-slate-400">Search and filter locally stored security scan results</p>
+          </div>
+
+          <!-- Filter Pills -->
+          <div class="flex items-center space-x-1 bg-slate-900 p-1 rounded-lg border border-borderSlate text-xs">
+            <button onclick="filterHistory('ALL', this)" class="history-filter-btn px-3 py-1 rounded-md font-semibold bg-brandBlue text-white">All</button>
+            <button onclick="filterHistory('HIGH RISK', this)" class="history-filter-btn px-3 py-1 rounded-md font-medium text-slate-400 hover:text-white">High Risk</button>
+            <button onclick="filterHistory('SUSPICIOUS', this)" class="history-filter-btn px-3 py-1 rounded-md font-medium text-slate-400 hover:text-white">Suspicious</button>
+            <button onclick="filterHistory('LOW RISK', this)" class="history-filter-btn px-3 py-1 rounded-md font-medium text-slate-400 hover:text-white">Safe</button>
+          </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-3 text-slate-500"></i>
+          <input type="text" id="history-search" oninput="renderHistoryTable()" placeholder="Search by subject, keywords, or status..." class="w-full bg-slate-900 border border-borderSlate rounded-lg pl-10 pr-4 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-brandBlue">
+        </div>
+
+        <!-- History Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-borderSlate text-slate-400 font-mono text-[10px] uppercase">
+                <th class="py-3 px-3">Subject / Message</th>
+                <th class="py-3 px-3">Timestamp</th>
+                <th class="py-3 px-3 text-center">Indicators</th>
+                <th class="py-3 px-3 text-center">Score</th>
+                <th class="py-3 px-3 text-right">Status</th>
+              </tr>
+            </thead>
+            <tbody id="history-table-body" class="divide-y divide-borderSlate/60 text-slate-300">
+              <!-- Dynamically populated via JS -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- VIEW 4: PHISHING AWARENESS VIEW -->
+    <main id="view-awareness" class="view-panel hidden p-6 space-y-6 flex-1">
+      <div class="space-y-2">
+        <h3 class="text-lg font-bold text-white">Phishing Awareness & Security Guide</h3>
+        <p class="text-xs text-slate-400">Master the primary tactics modern attacker campaigns use to steal access credentials and funds.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <div class="bg-cardBg border border-borderSlate rounded-xl p-5 space-y-3">
+          <div class="p-2.5 bg-red-500/10 text-red-400 rounded-xl w-max">
+            <i data-lucide="clock" class="w-5 h-5"></i>
+          </div>
+          <h4 class="text-sm font-bold text-white">1. Manufactured Urgency</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Phishers rush victims with immediate deadlines ("Account locked in 2 hours") to cause anxiety and force hasty actions before verifying authenticity.
+          </p>
+        </div>
+
+        <div class="bg-cardBg border border-borderSlate rounded-xl p-5 space-y-3">
+          <div class="p-2.5 bg-amber-500/10 text-amber-400 rounded-xl w-max">
+            <i data-lucide="link-2" class="w-5 h-5"></i>
+          </div>
+          <h4 class="text-sm font-bold text-white">2. Spoofed Domains & Typos</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Look closely at links! Domain names like <code>chase-secure-login.top</code> or <code>paypaI.com</code> (using a capital 'I' for 'l') impersonate official domains.
+          </p>
+        </div>
+
+        <div class="bg-cardBg border border-borderSlate rounded-xl p-5 space-y-3">
+          <div class="p-2.5 bg-blue-500/10 text-blue-400 rounded-xl w-max">
+            <i data-lucide="key-round" class="w-5 h-5"></i>
+          </div>
+          <h4 class="text-sm font-bold text-white">3. One-Time Code (OTP) Theft</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            No bank or customer service agent will ever request your 2FA OTP over email, phone, or direct text message. Treat OTPs like your master password.
+          </p>
+        </div>
+
+        <div class="bg-cardBg border border-borderSlate rounded-xl p-5 space-y-3">
+          <div class="p-2.5 bg-purple-500/10 text-purple-400 rounded-xl w-max">
+            <i data-lucide="file-warning" class="w-5 h-5"></i>
+          </div>
+          <h4 class="text-sm font-bold text-white">4. Malicious Attachments</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Be cautious of unexpected <code>.html</code>, <code>.zip</code>, or double extension attachments like <code>Invoice_Oct.pdf.exe</code> that execute malware locally.
+          </p>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- VIEW 5: ABOUT PROJECT VIEW -->
+    <main id="view-about" class="view-panel hidden p-6 space-y-6 flex-1">
+      <div class="bg-cardBg border border-borderSlate rounded-xl p-6 space-y-5 max-w-3xl">
+        <div class="flex items-center space-x-3">
+          <div class="bg-brandBlue p-2.5 rounded-xl text-white">
+            <i data-lucide="shield" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white">PhishGuard Security Analyzer</h3>
+            <p class="text-xs text-slate-400">VSEC Mini-Project Prototype · Rule-Based Architecture</p>
+          </div>
+        </div>
+
+        <div class="space-y-3 text-xs text-slate-300 leading-relaxed border-t border-borderSlate pt-4">
+          <h4 class="font-bold text-white text-sm">Project Architecture</h4>
+          <p>
+            PhishGuard is a privacy-first, client-side phishing threat analysis prototype. It evaluates raw text content, email headers, SMS messages, and hyperlinks using a deterministic, rule-based heuristic scoring model.
+          </p>
+          
+          <h4 class="font-bold text-white text-sm pt-2">Core Principles</h4>
+          <ul class="list-disc list-inside space-y-1 text-slate-400">
+            <strong class="text-slate-200">Zero Server Uploads:</strong> Text processing is executed locally in JavaScript in your browser memory.
+            <strong class="text-slate-200">Transparent Rules:</strong> Every rule match is explicitly attributed with weighted scores and matched keywords.
+            <strong class="text-slate-200">No AI Black Boxes:</strong> Scoring thresholds (0-29 Low Risk, 30-59 Suspicious, 60-100 High Risk) are fully documented.
+          </ul>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-5 right-5 bg-slate-800 border border-borderSubtle text-slate-200 text-xs px-4 py-2.5 rounded-lg shadow-xl hidden flex items-center space-x-2 z-50">
+    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+    <span id="toast-message">Report copied to clipboard!</span>
+  </div>
+
+  <!-- JAVASCRIPT ENGINE & INTERACTIVITY -->
+  <script>
+    // INITIAL MOCK DATA FOR SCANS HISTORY & FEED
+    let historyScans = [
+      {
+        id: 1,
+        subject: "Urgent: Your Chase account has been locked due to unusual activity",
+        timestamp: "Oct 25, 2026 · 20:41",
+        indicators: 6,
+        score: 100,
+        status: "HIGH RISK"
+      },
+      {
+        id: 2,
+        subject: "USPS Notice: Package delivery placed on hold (Fee required $1.99)",
+        timestamp: "Oct 25, 2026 · 19:12",
+        indicators: 3,
+        score: 56,
+        status: "SUSPICIOUS"
+      },
+      {
+        id: 3,
+        subject: "Weekly Team Sync Notes & Zoom Video Recording",
+        timestamp: "Oct 25, 2026 · 17:05",
+        indicators: 0,
+        score: 2,
+        status: "LOW RISK"
+      },
+      {
+        id: 4,
+        subject: "Action Required: Verify your Netflix billing payment info",
+        timestamp: "Oct 24, 2026 · 14:22",
+        indicators: 5,
+        score: 84,
+        status: "HIGH RISK"
+      },
+      {
+        id: 5,
+        subject: "HR Department: Updated Q4 Remote Work Policy",
+        timestamp: "Oct 24, 2026 · 10:15",
+        indicators: 0,
+        score: 0,
+        status: "LOW RISK"
+      }
+    ];
+
+    // PRESET MESSAGES
+    const PRESETS = {
+      chase: `URGENT: Your Chase account has been locked due to unusual activity. To restore access, verify your identity within 24 hours at http://chase-secure-verify.top/login — otherwise your account will be permanently suspended.`,
+      package: `USPS Notice: Your package delivery has been placed on hold due to incorrect address fee ($1.99). Please confirm your details at http://usps-track-package-update.com within 12 hours.`,
+      meeting: `Hi Team, please find attached the revised presentation deck for our sync meeting at 3 PM today. Let me know if you have any questions!`
+    };
+
+    // HEURISTIC RULE DATABASE
+    const RULES_DB = [
+      {
+        id: 'credentials',
+        title: 'Asks for credentials or codes',
+        level: 'HIGH',
+        weight: 24,
+        description: 'No legitimate service asks you to confirm a password, PIN or one-time code through a message. This is the payload most phishing is after.',
+        test: (text) => {
+          const keywords = ['login', 'password', 'pin', 'one-time code', 'otp', 'passcode'];
+          const matches = keywords.filter(k => text.toLowerCase().includes(k));
+          return matches.length > 0 ? matches : null;
+        }
+      },
+      {
+        id: 'urgency',
+        title: 'Manufactured urgency',
+        level: 'HIGH',
+        weight: 22,
+        description: 'Phishing works by rushing you past your own judgement. Countdowns and "act now" phrasing are pressure tactics, not customer service.',
+        test: (text) => {
+          const keywords = ['urgent', 'within 24 hours', 'within 12 hours', 'immediately', 'act now', 'expires today'];
+          const matches = keywords.filter(k => text.toLowerCase().includes(k));
+          return matches.length > 0 ? matches : null;
+        }
+      },
+      {
+        id: 'identity',
+        title: 'Requests identity verification',
+        level: 'HIGH',
+        weight: 20,
+        description: '"Verify your account" is the most common phishing hook. Close the message and open the company\'s official app instead of using any link.',
+        test: (text) => {
+          const keywords = ['verify your identity', 'verify your account', 'confirm your details', 'restore access'];
+          const matches = keywords.filter(k => text.toLowerCase().includes(k));
+          return matches.length > 0 ? matches : null;
+        }
+      },
+      {
+        id: 'deceptive_link',
+        title: 'Link destination is deceptive',
+        level: 'HIGH',
+        weight: 20,
+        description: 'At least one link is built to look like something it is not. Don\'t click it to "check".',
+        test: (text) => {
+          const urlMatch = text.match(/https?:\/\/[^\s]+/gi);
+          if (urlMatch) {
+            const suspiciousDomains = urlMatch.filter(u => u.includes('-verify') || u.includes('-secure') || u.includes('.top') || u.includes('-update'));
+            return suspiciousDomains.length > 0 ? suspiciousDomains : null;
+          }
+          return null;
+        }
+      },
+      {
+        id: 'loss_access',
+        title: 'Threat of losing access',
+        level: 'MEDIUM',
+        weight: 16,
+        description: 'Warnings about suspension, termination or legal trouble are designed to make you act before you check anything.',
+        test: (text) => {
+          const keywords = ['locked', 'suspended', 'placed on hold', 'termination', 'unusual activity'];
+          const matches = keywords.filter(k => text.toLowerCase().includes(k));
+          return matches.length > 0 ? matches : null;
+        }
+      }
+    ];
+
+    // NAVIGATION LOGIC
+    function navigateTo(viewKey) {
+      // Hide all panels
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
+      
+      // Reset sidebar active states
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.className = 'nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 transition-all';
+        const dot = btn.querySelector('.active-dot');
+        if (dot) dot.classList.add('hidden');
+      });
+
+      // Show selected panel
+      const targetPanel = document.getElementById(`view-${viewKey}`);
+      if (targetPanel) targetPanel.classList.remove('hidden');
+
+      // Highlight active navigation button
+      const activeBtn = document.getElementById(`nav-${viewKey}`);
+      if (activeBtn) {
+        activeBtn.className = 'nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-semibold bg-brandBlue/15 text-blue-400 border border-brandBlue/30 shadow-sm transition-all';
+        const dot = activeBtn.querySelector('.active-dot');
+        if (dot) dot.classList.remove('hidden');
+      }
+
+      // Update header page title
+      const titleMap = {
+        dashboard: 'Dashboard',
+        analyze: 'Analyze Message',
+        history: 'Scan History',
+        awareness: 'Phishing Awareness Guide',
+        about: 'About Project'
+      };
+      document.getElementById('top-bar-title').innerText = titleMap[viewKey] || 'Dashboard';
+
+      if (viewKey === 'history') renderHistoryTable();
+      if (viewKey === 'dashboard') renderDashboardFeed();
+    }
+
+    // MAIN ANALYSIS SCANNER LOGIC
+    function runAnalysis() {
+      const text = document.getElementById('message-text').value;
+      document.getElementById('char-counter').innerText = `${text.length} / 4000 characters`;
+
+      if (!text.trim()) {
+        updateResults(0, [], text);
+        return;
+      }
+
+      let score = 0;
+      let triggered = [];
+
+      RULES_DB.forEach(rule => {
+        const matches = rule.test(text);
+        if (matches) {
+          score += rule.weight;
+          triggered.push({ ...rule, foundTags: matches });
+        }
+      });
+
+      if (triggered.length === 1 && score > 44) score = 44;
+      score = Math.min(100, score);
+      updateResults(score, triggered, text);
+    }
+
+    function updateResults(score, triggered, text) {
+      document.getElementById('score-display').innerText = score;
+      const arc = document.getElementById('gauge-arc');
+      arc.setAttribute('stroke-dasharray', `${score}, 100`);
+
+      const badgeStatus = document.getElementById('badge-status');
+      const statusText = document.getElementById('status-text');
+      const statusDot = document.getElementById('status-dot');
+      const headline = document.getElementById('summary-headline');
+
+      let statusLabel = "LOW RISK";
+
+      if (score >= 60) {
+        statusLabel = "HIGH RISK";
+        arc.setAttribute('class', 'text-riskRed transition-all duration-700 ease-out');
+        badgeStatus.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-red-500/10 text-red-400 border border-red-500/30 flex items-center';
+        statusDot.className = 'w-1.5 h-1.5 rounded-full bg-red-500 mr-1.5';
+        statusText.innerText = statusLabel;
+        headline.innerText = 'High-risk indicators detected: request to share credentials or codes, urgent deadline pressure, and deceptive links.';
+        headline.className = 'text-red-400 font-medium leading-relaxed';
+      } else if (score >= 30) {
+        statusLabel = "SUSPICIOUS";
+        arc.setAttribute('class', 'text-riskOrange transition-all duration-700 ease-out');
+        badgeStatus.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-orange-500/10 text-orange-400 border border-orange-500/30 flex items-center';
+        statusDot.className = 'w-1.5 h-1.5 rounded-full bg-orange-500 mr-1.5';
+        statusText.innerText = statusLabel;
+        headline.innerText = 'Suspicious indicators detected: review links carefully and verify through official channels before proceeding.';
+        headline.className = 'text-orange-400 font-medium leading-relaxed';
+      } else {
+        statusLabel = "LOW RISK";
+        arc.setAttribute('class', 'text-riskGreen transition-all duration-700 ease-out');
+        badgeStatus.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center';
+        statusDot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5';
+        statusText.innerText = statusLabel;
+        headline.innerText = 'No major phishing indicators detected in this message. Standard safety precautions still apply.';
+        headline.className = 'text-emerald-400 font-medium leading-relaxed';
+      }
+
+      document.getElementById('indicators-count-badge').innerText = `${triggered.length} indicators`;
+      document.getElementById('feed-title').innerText = `${triggered.length} indicators triggered`;
+      document.getElementById('tab-count').innerText = triggered.length;
+
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      const links = (text.match(/https?:\/\/[^\s]+/gi) || []).length;
+      document.getElementById('tab-links-count').innerText = links;
+      const capsCount = (text.match(/[A-Z]/g) || []).length;
+      const capsPct = text.length > 0 ? Math.round((capsCount / text.length) * 100) : 0;
+      document.getElementById('text-meta-stats').innerText = `${words} words · ${links} links · ${capsPct}% caps`;
+
+      // Render Rule Cards
+      const container = document.getElementById('rules-container');
+      if (triggered.length === 0) {
+        container.innerHTML = `
+          <div class="p-8 text-center bg-cardBg border border-borderSlate rounded-xl space-y-2">
+            <i data-lucide="shield-check" class="w-8 h-8 text-emerald-400 mx-auto"></i>
+            <h4 class="text-xs font-semibold text-white">No Threat Indicators Triggered</h4>
+            <p class="text-[11px] text-slate-400">The heuristic scanner did not find known phishing hooks in this text snippet.</p>
+          </div>
+        `;
+      } else {
+        container.innerHTML = triggered.map(item => `
+          <div class="bg-cardBg border border-borderSlate rounded-xl p-4 space-y-2.5 hover:border-slate-700 transition-colors">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2 h-2 rounded-full ${item.level === 'HIGH' ? 'bg-red-500' : 'bg-amber-500'}"></span>
+                <h4 class="text-xs font-bold text-white">${escapeHtml(item.title)}</h4>
+              </div>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded border ${item.level === 'HIGH' ? 'bg-red-950/60 text-red-400 border-red-500/30' : 'bg-amber-950/60 text-amber-400 border-amber-500/30'}">
+                ${item.level} +${item.weight}
+              </span>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">${escapeHtml(item.description)}</p>
+            <div class="flex items-center space-x-2 pt-1">
+              <span class="text-[10px] uppercase font-mono text-slate-500">FOUND</span>
+              <div class="flex flex-wrap gap-1.5">
+                ${item.foundTags.map(tag => `<span class="font-mono text-[11px] bg-slate-900 border border-borderSubtle px-2 py-0.5 rounded text-slate-200">${escapeHtml(tag)}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+      lucide.createIcons();
+    }
+
+    // DASHBOARD & HISTORY FEED RENDERERS
+    function renderDashboardFeed() {
+      const container = document.getElementById('dashboard-feed-list');
+      container.innerHTML = historyScans.slice(0, 4).map(item => {
+        let statusBadge = '';
+        if (item.status === 'HIGH RISK') {
+          statusBadge = '<span class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-red-500/10 text-red-400 border border-red-500/30">100 - HIGH RISK</span>';
+        } else if (item.status === 'SUSPICIOUS') {
+          statusBadge = '<span class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-orange-500/10 text-orange-400 border border-orange-500/30">56 - SUSPICIOUS</span>';
+        } else {
+          statusBadge = '<span class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">02 - SAFE</span>';
+        }
+
+        return `
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 bg-slate-900/90 border border-borderSlate rounded-xl gap-3 hover:border-slate-700 transition-colors">
+            <div class="space-y-1">
+              <h4 class="text-xs font-bold text-slate-100">${escapeHtml(item.subject)}</h4>
+              <div class="flex items-center space-x-3 text-[11px] text-slate-400 font-mono">
+                <span>${item.timestamp}</span>
+                <span>·</span>
+                <span>${item.indicators} indicators detected</span>
+              </div>
+            </div>
+            <div class="shrink-0 flex items-center space-x-3">
+              ${statusBadge}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    let activeHistoryFilter = 'ALL';
+    function filterHistory(filter, btn) {
+      activeHistoryFilter = filter;
+      document.querySelectorAll('.history-filter-btn').forEach(b => {
+        b.className = 'history-filter-btn px-3 py-1 rounded-md font-medium text-slate-400 hover:text-white';
+      });
+      btn.className = 'history-filter-btn px-3 py-1 rounded-md font-semibold bg-brandBlue text-white';
+      renderHistoryTable();
+    }
+
+    function renderHistoryTable() {
+      const query = document.getElementById('history-search').value.toLowerCase();
+      const body = document.getElementById('history-table-body');
+
+      const filtered = historyScans.filter(item => {
+        const matchesFilter = activeHistoryFilter === 'ALL' || item.status === activeHistoryFilter;
+        const matchesQuery = item.subject.toLowerCase().includes(query) || item.status.toLowerCase().includes(query);
+        return matchesFilter && matchesQuery;
+      });
+
+      if (filtered.length === 0) {
+        body.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-slate-500">No matching scan history records found.</td></tr>`;
+        return;
+      }
+
+      body.innerHTML = filtered.map(item => `
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-3 px-3 font-medium text-slate-200 max-w-xs truncate">${escapeHtml(item.subject)}</td>
+          <td class="py-3 px-3 font-mono text-[11px] text-slate-400">${item.timestamp}</td>
+          <td class="py-3 px-3 text-center font-mono">${item.indicators}</td>
+          <td class="py-3 px-3 text-center font-mono font-bold">${item.score}/100</td>
+          <td class="py-3 px-3 text-right">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${item.status === 'HIGH RISK' ? 'bg-red-500/10 text-red-400 border border-red-500/30' : item.status === 'SUSPICIOUS' ? 'bg-orange-500/10 text-orange-400 border border-orange-500/30' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'}">
+              ${item.status}
+            </span>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // HELPER UTILITIES
+    function handleInput() {
+      runAnalysis();
+    }
+
+    function loadPreset(key) {
+      if (PRESETS[key]) {
+        document.getElementById('message-text').value = PRESETS[key];
+        runAnalysis();
+      }
+    }
+
+    function clearText() {
+      document.getElementById('message-text').value = '';
+      runAnalysis();
+    }
+
+    function resetAnalyzer() {
+      loadPreset('chase');
+    }
+
+    function togglePresetDropdown() {
+      document.getElementById('preset-dropdown').classList.toggle('hidden');
+    }
+
+    function switchTab(tabName) {
+      ['indicators', 'links', 'nextsteps'].forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (btn) btn.className = t === tabName ? 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-brandBlue text-white shadow-sm' : 'px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200';
+      });
+      showToast(`Switched to ${tabName} tab`);
+    }
+
+    function pasteFromClipboard() {
+      navigator.clipboard.readText().then(text => {
+        if (text) {
+          document.getElementById('message-text').value = text;
+          runAnalysis();
+          showToast('Pasted content from clipboard');
+        }
+      }).catch(() => showToast('Clipboard permission required'));
+    }
+
+    function copyReport() {
+      const text = document.getElementById('message-text').value;
+      const score = document.getElementById('score-display').innerText;
+      const status = document.getElementById('status-text').innerText;
+      document.execCommand('copy');
+      showToast('Report summary copied to clipboard!');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-message').innerText = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 2500);
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    window.onload = function() {
+      lucide.createIcons();
+      renderDashboardFeed();
+      runAnalysis();
+    };
+  </script>
+</body>
+</html>
